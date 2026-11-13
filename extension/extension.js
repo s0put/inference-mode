@@ -1,6 +1,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import * as Gettext from 'gettext';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
@@ -8,10 +9,12 @@ import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/q
 
 const HELPER = '/usr/local/libexec/inference-mode';
 const STATE = '/run/inference-mode.dpm';
+// Use Shell's translations so standard labels match the native power menu.
+const _ = Gettext.domain('gnome-shell').gettext;
 const MODES = [
-    ['power-saver', 'Risparmio energetico', 'power-profile-power-saver-symbolic'],
-    ['balanced', 'Bilanciato', 'power-profile-balanced-symbolic'],
-    ['performance', 'Prestazioni', 'power-profile-performance-symbolic'],
+    ['power-saver', _('Power Saver'), 'power-profile-power-saver-symbolic'],
+    ['balanced', _('Balanced'), 'power-profile-balanced-symbolic'],
+    ['performance', _('Performance'), 'power-profile-performance-symbolic'],
     ['inference', 'Inference', 'applications-science-symbolic'],
 ];
 const Toggle = GObject.registerClass(class InferenceToggle extends QuickMenuToggle {});
@@ -34,8 +37,8 @@ export default class InferenceExtension extends Extension {
         this._native = this._quick._powerProfiles;
         this._proxy = this._native._powerProfilesToggle._proxy;
         this._indicator = new SystemIndicator();
-        this._toggle = new Toggle({title: 'Modalità energetica', toggleMode: false});
-        this._toggle.menu.setHeader('applications-science-symbolic', 'Modalità energetica');
+        this._toggle = new Toggle({title: _('Power Mode'), toggleMode: false});
+        this._toggle.menu.setHeader('applications-science-symbolic', _('Power Mode'));
         this._items = new Map();
         for (const [mode, title, icon] of MODES) {
             const item = new PopupMenu.PopupImageMenuItem(title, icon);
@@ -70,7 +73,7 @@ export default class InferenceExtension extends Extension {
         }
         this._mode = inference ? 'inference' : profile;
         const entry = MODES.find(([mode]) => mode === this._mode);
-        this._toggle.subtitle = entry?.[1] ?? 'Non disponibile';
+        this._toggle.subtitle = entry?.[1] ?? _('Unavailable');
         this._toggle.iconName = entry?.[2] ?? 'applications-science-symbolic';
         this._toggle.checked = this._mode === 'inference';
         for (const [mode, item] of this._items)

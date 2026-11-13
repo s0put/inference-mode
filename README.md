@@ -46,6 +46,8 @@ Open GNOME Quick Settings in the top-right corner:
 - Click the power tile to toggle between **Inference** and **Balanced**.
 - Open the tile's arrow menu to select **Power Saver**, **Balanced**, **Performance**, or **Inference**.
 
+Standard profile names use GNOME Shell's translations and follow the system interface language, just like the native power menu. **Inference** keeps its custom name.
+
 Disable Inference when you finish your workload. If it is still active at **logout, restart, or normal shutdown**, a systemd cleanup unit automatically restores the previous GPU DPM setting and selects **Balanced**. If you have already left Inference, it leaves your chosen power profile unchanged.
 
 Only the Quick Settings extension displays “Inference”. GNOME's system power settings and `powerprofilesctl` still report `balanced`.
