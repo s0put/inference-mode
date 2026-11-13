@@ -1,0 +1,11 @@
+[Unit]
+Description=Restore Inference Mode settings when %i ends
+BindsTo=%i.scope
+After=%i.scope power-profiles-daemon.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/true
+ExecStop=/usr/local/libexec/inference-mode session-end
+TimeoutStopSec=20s

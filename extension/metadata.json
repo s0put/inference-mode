@@ -1,0 +1,7 @@
+{
+  "uuid": "inference-mode@local",
+  "name": "Inference Power Mode",
+  "description": "Balanced + AMD GPU DPM high.",
+  "shell-version": ["50"],
+  "version": 1
+}
